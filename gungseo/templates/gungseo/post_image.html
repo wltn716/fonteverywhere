@@ -17,6 +17,14 @@
    </div>
 </div>
 
+ 
+<h1>New File</h1>
+<form method="post" action={% url 'result' %} enctype="multipart/form-data" novalidate>
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Upload</button>
+</form>
+
 <script type="text/javascript">
 	var sel_file;
 	$(document).ready(function(){
