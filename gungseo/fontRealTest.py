@@ -2,28 +2,17 @@ import sys
 from os import listdir
 from os.path import isfile, join
 from keras.preprocessing.image import ImageDataGenerator
+from keras.utils import np_utils
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D
+from keras.callbacks import ModelCheckpoint,EarlyStopping
 from keras.models import load_model
 # import matplotlib.pyplot as plt
 import numpy
 import os
+import tensorflow as tf
 import cv2
 from .img_preprocessing import getTextImages
-
-# import sys
-# from os import listdir
-# from os.path import isfile, join
-# from keras.preprocessing.image import ImageDataGenerator
-# from keras.utils import np_utils
-# from keras.models import Sequential
-# from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D
-# from keras.callbacks import ModelCheckpoint,EarlyStopping
-# from keras.models import load_model
-# # import matplotlib.pyplot as plt
-# import numpy
-# import os
-# import tensorflow as tf
-# import cv2
-# from .img_preprocessing import getTextImages
 
 
 #데이터 로드
