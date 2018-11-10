@@ -2,111 +2,97 @@
 {% block content %}
 
 <h2><b>이미지 미리보기</b></h2>
-<div class="preview_wrap">
+<div class="upload_wrap">
 	<p class="title">이미지 업로드</p>
-	<input type="file" id="input_img" />
-	<div class="img_wrap">
-    	<img id="img" />
-  </div>
-  <div class="icon">
-   	<i class="fas fa-crop-alt"></i>
-   	<i class="fas fa-hand-point-up"></i>
-   	<i class="fas fa-times"></i>
-   	<i class="fas fa-sync-alt"></i>
-   	<i class="fas fa-arrow-circle-right"></i>
-  </div>
-  <div id="preview-pane">
-    <div class="preview-container">
-      <img  class="jcrop-preview" alt="Preview" />
+  <form method="post" action={% url 'result' %} enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    {{ form.as_p}}
+  	<div class="preview_wrap">
+      	<img id="preview" />
     </div>
-  </div>
+    <div class="icon">
+     	<i class="fas fa-crop-alt"></i>
+     	<i class="fas fa-hand-point-up"></i>
+     	<i class="fas fa-times"></i>
+     	<i class="fas fa-sync-alt"></i>
+     	<button type="submit"><i class="fas fa-arrow-circle-right"></i></button>
+    </div>
+    <div class="hidden_submit">
+      <input id="x" type="hidden" name="x">
+      <input id="y" type="hidden" name="y">
+      <input id="w" type="hidden" name="w">
+      <input id="h" type="hidden" name="h">
+    </div>
+  </form>
 </div>
-
- 
-<h1>New File</h1>
-<form method="post" action={% url 'result' %} enctype="multipart/form-data" novalidate>
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Upload</button>
-</form>
-
 <script type="text/javascript">
-	var sel_file, target, resize_flag;
-  // crop variable 선언
-  var jcrop_api=null, boundx, boundy,
-    $preview = $('#preview-pane'),
-    $pcnt = $('#preview-pane .preview-container'),
-    $pimg = $('#preview-pane .preview-container img'),
-    xsize = $pcnt.width(),
-    ysize = $pcnt.height();
+  //variable 선언
+	var sel_file, target, resize_flag=false, crop_flag=false, upload_flag= false;
+  
+  var jcrop_api, boundx, boundy;
 
 	$(document).ready(function(){
-    $(".img_wrap").hide();
+    // 프리뷰숨기기
+    $(".preview_wrap").hide();
+
 		// imageUpload & preview
-		$("#input_img").on("change", handleImgFileSelect);
+		$(".input_img").on("change", handleImgFileSelect);
 
 		// image remove
 		$(".fa-times").click(function(){
-      if(jcrop_api != null){
+      if(crop_flag == true){
         jcrop_api.destroy();
-        jcrop_api = null;
+        crop_flag = false;
       }
       if(resize_flag == true){
-        $("#img").resizable('destroy');
-        $("#img").height(300);
-        $("#img").width(300);
+        $("#preview").resizable('destroy');
+        $("#preview").height(300);
+        $("#preview").width(300);
         resize_flag = false;
       }
-      $("#img").removeAttr('src');
-			$("#input_img").val("");
-      $("#input_img").show();
-      $(".img_wrap").hide();
+      $("#preview").removeAttr('src');
+			$(".input_img").val("");
+      $(".input_img").show();
+      $(".preview_wrap").hide();
+      upload_flag = false;
     });
 		
 		// image refreshing
 		$(".fa-sync-alt").click(function(){
-      if(jcrop_api != null){
+      if(crop_flag == true){
         jcrop_api.destroy();
-        jcrop_api = null;
+        crop_flag = false;
       }
       if(resize_flag == true){
-        $("#img").resizable('destroy');
-        $("#img").height(300);
-        $("#img").width(300);
+        $("#preview").resizable('destroy');
+        $("#preview").height(300);
+        $("#preview").width(300);
       }
-      $("#img").attr("src", target);
+      $("#preview").attr("src", target);
       
-    });
-
-    // image crop
-    $(".fa-crop-alt").click(function(){
-      if(jcrop_api == null){
-        $("#img").Jcrop({
-          onChange: updatePreview,
-          onSelect: updatePreview,
-          bgOpacity: 0.5,
-          setSelect: [0,0,50,50]
-        },function(){
-        // Use the API to get the real image size
-          var bounds = this.getBounds();
-          boundx = bounds[0];
-          boundy = bounds[1];
-
-          jcrop_api = this; // Store the API in the jcrop_api variable
-          // Move the preview into the jcrop container for css positioning
-          // $preview.appendTo(jcrop_api.ui.holder);
-        });
-      }
     });
     // image resizing
     $(".fa-hand-point-up").click(function(){
-      if(jcrop_api != null){
-        // 크롭중에는 리사이징 불가
+      if(crop_flag == true){
+        crop_flag = false;
+        jcrop_api.destroy();
       }
       else{
         resize_flag = true;
-        $( "#img" ).resizable({
-        containment: ".img_wrap"});
+        $( "#preview" ).resizable({
+        containment: ".preview_wrap"});
+      }
+    });
+    // image crop
+    $(".fa-crop-alt").click(function(){
+      if(crop_flag == false && upload_flag == true){
+        crop_flag = true;
+        $("#preview").Jcrop({
+          onChange: updateCoords,
+          onSelect: updateCoords,
+          bgOpacity: 0.5,
+          setSelect: [100,100,200,200]
+        },function(){jcrop_api = this;});
       }
     });
 	});
@@ -123,31 +109,26 @@
 			var reader = new FileReader();
 			reader.onload = function(e){
         target = e.target.result;
-				$("#img, img.jcrop-preview, .jcrop-holder img").attr("src", target);
-        $("#input_img").hide();
-        $(".img_wrap").show();
+				$("#preview, img.jcrop-preview, .jcrop-holder img .submit_img").attr("src", target);
+        $(".input_img").hide();
+        $(".preview_wrap").show();
+        upload_flag = true;
 			}
 			reader.readAsDataURL(f);
 		});
 	}
 
-  function updatePreview(c) {
-    if (parseInt(c.w) > 0) {
-      var rx = xsize / c.w;
-      var ry = ysize / c.h;
-        
-      $('#x').val(c.x);
-      $('#y').val(c.y);
-      $('#w').val(c.w);
-      $('#h').val(c.h);
-
-      $pimg.css({
-        width: Math.round(rx * boundx) + 'px',
-        height: Math.round(ry * boundy) + 'px',
-        marginLeft: '-' + Math.round(rx * c.x) + 'px',
-        marginTop: '-' + Math.round(ry * c.y) + 'px'
-      });
-    }
+  function updateCoords(c){
+    var x, y, x2, y2;
+    x = c.x;
+    y = c.y;
+    w = c.w;
+    h = c.h;
+    $("#x").val(x);
+    $("#y").val(y);
+    $("#w").val(w);
+    $("#h").val(h);
+    console.log("x :"+x+" y :"+y+" w: "+w+" h: "+h);
   }
 </script>
 
