@@ -7,28 +7,49 @@
 	<input type="file" id="input_img" />
 	<div class="img_wrap">
     	<img id="img" />
+    </div>
+   <div class="icon">
+   	<i class="fas fa-crop-alt"></i>
+   	<i class="fas fa-hand-point-up"></i>
+   	<i class="fas fa-times"></i>
+   	<i class="fas fa-sync-alt"></i>
+   	<i class="fas fa-arrow-circle-right"></i>
    </div>
 </div>
 
+ 
+<h1>New File</h1>
+<form method="post" action={% url 'result' %} enctype="multipart/form-data" novalidate>
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Upload</button>
+</form>
+
 <script type="text/javascript">
 	var sel_file;
-
 	$(document).ready(function(){
+		// imageUpload & preview
 		$("#input_img").on("change", handleImgFileSelect);
+
+		// image remove
+		$(".fa-times").click(function(){
+			$("#img").attr("src", null);
+			$("#input_img").val("");});
+		
+		// image refreshing
+		$(".fa-sync-alt").click(function(){
+			$("#input_img").on("change", handleImgFileSelect);});
 	});
 
 	function handleImgFileSelect(e){
 		var files = e.target.files;
 		var filesArr = Array.prototype.slice.call(files);
-
 		filesArr.forEach(function(f){
 			if(!f.type.match("image.*")){
 				alert("확장자는 이미지 확장자만 가능합니다.");
 				return;
 			}
-
 			sel_file = f;
-
 			var reader = new FileReader();
 			reader.onload = function(e){
 				$("#img").attr("src", e.target.result);
@@ -36,5 +57,7 @@
 			reader.readAsDataURL(f);
 		});
 	}
+	
+	
 </script>
 {% endblock %} 
