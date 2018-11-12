@@ -8,6 +8,9 @@ from django.http import HttpResponseRedirect
 
 from .fontRealTest import getFontInfo
 
+from .img_preprocessing import getTextImages
+import cv2
+
 def index(request):
 	return render(request, 'gungseo/index.html', {})
 
@@ -23,6 +26,10 @@ def result(request):
 			fs = FileSystemStorage()
 			filename = fs.save(file.name, file)
 			uploaded_file_url = fs.url(filename)
+
+			# temp = getTextImages('')
+			# img_temp = cv2.imread(uploaded_file_url[1:])
+			# temp.imtrim(img_temp,x,y,w,h)
 			
 			gfi = getFontInfo(uploaded_file_url)
 			analysis_result = gfi.decision()
