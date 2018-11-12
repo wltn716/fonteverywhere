@@ -1,11 +1,12 @@
 {% extends 'gungseo/application.html' %}
 {% block content %}
+{% load staticfiles %}
 <html>
 <!--궁금해서체 LOGO-->
 <div class="header">
-  <img src="/media/logo.PNG">
+  <a href="http://127.0.0.1:8000"><img src="{% static 'image/logo_22.PNG' %}"></a> 
 </div>
-  
+
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <script>
@@ -37,9 +38,11 @@
 
    <style>
   body, html, .main {
-      height: 80%;
+      height: 100%;
       padding: 40px;
   }
+
+
 
   section {
       min-height: 80%;
@@ -48,17 +51,18 @@
 </head>
 
 <body>
+<div class="main">
    <!--글꼴찾기 버튼-->
-  <p align="right">그때 봤던 그 글꼴, 저희가 찾아드릴게요.</p>
-  <a href="http://127.0.0.1:8000/post_image"><img src="/media/b_1.PNG" align="right"></a> 
-  <br></br>
+  <p align="right" style="font-size:15px; font-family:Gothic; font-weight: 600";>그때 봤던 그 글꼴, 저희가 찾아드릴게요.</p>
+  <a href="http://127.0.0.1:8000/post_image"><img src="{% static 'image/b_1.png' %}" align="right"></a> 
+  <br></br> 
 
 
    <!--더 알아보기 버튼-->
-  <p align="right">궁서체는 딥러닝을 이용한 글꼴분석 웹 서비스 입니다.</p>             
-  <a href="#section2"><img src="/media/b_2.PNG" align="right" ></a> 
+  <p align="right" style="font-size:15px; font-family:Gothic; font-weight: 600";>궁서체는 딥러닝을 이용한 글꼴분석 웹 서비스 입니다.</p>             
+  <a href="#section2"><img src="{% static 'image/b_2.png' %}" align="right" ></a> 
 
-  <div class="main"> 
+  
     <section style="background-color:white">
     </section>
   </div>
@@ -68,7 +72,7 @@
   <div class="main" id="section2">
     <section style="background-color:white" align="center">
       <br></br><br></br>
-      <p style="font-size:26px; font-family:Gothic";>궁서체란? </p>
+      <p style="font-size:26px; font-family:Gothic font-weight: 600";>궁서체란? </p>
       <p style="font-size:20px; font-family:Gothic";>궁서체는는 심층 학습(deep learning)을 도입해 </p>
       <p style="font-size:20px; font-family:Gothic";>빠르고 정확하게 한글 서체를 식별해주는 한글 서체 서비스입니다.</p>
       <p style="font-size:20px; font-family:Gothic";>궁서체를 통해 쉽고 편리하게 원하는 폰트를 찾아보세요.</p>
@@ -77,9 +81,11 @@
 
 
     <!--궁서체 이용방법-->
-      <img src="/media/howto.PNG" align="center">
+      <img src="{% static 'image/threesteps.PNG' %}" align="center"><br></br><br></br><br></br>
+
     </section>
   </div>
+
 </body>
 </html>
 {% endblock %} 
