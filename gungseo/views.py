@@ -37,9 +37,22 @@ def result(request):
 			cv2.imwrite(uploaded_file_url[1:],cropped_img)
 			
 			gfi = getFontInfo(cropped_img)
-			analysis_result, class_indices = gfi.decision()
+			analysis_result, one_hot = gfi.decision()
 
-			return render(request, 'gungseo/result.html', {'uploaded_file_url':uploaded_file_url, 'analysis_result':analysis_result, 'class_indices':class_indices})
+			if one_hot == 0 :
+				class_name = "궁서체"
+			elif one_hot == 1 :
+				class_name = "나눔손글씨붓"
+			elif one_hot == 2 :
+				class_name = "썸타임"
+			elif one_hot == 3 :
+				class_name = "포천오성과한음"
+			elif one_hot == 4 :
+				class_name = "훈화양연화"	
+			else :
+				class_name = "찾을 수 없습니다."
+
+			return render(request, 'gungseo/result.html', {'uploaded_file_url':uploaded_file_url, 'analysis_result':analysis_result, 'class_name':class_name})
 	
 	else:
 		return HttpResponseRedirect(request.META.get('HTTP_REFERER','/'))

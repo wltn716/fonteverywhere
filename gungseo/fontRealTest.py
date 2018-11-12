@@ -50,14 +50,14 @@ class getFontInfo:
     model = load_model('gungseo/fontModel.h5')
     #테스트 셋 예측
     predictions = model.predict_generator(test_generator, steps=1)
-    #클래스 이름 get
-    class_dictionary = test_generator.class_indices
+    #원핫인코딩 결과
+    one_hot = predictions.argmax(axis=-1)
     #클리어
     K.clear_session()
     #예측값 저장
     y_pred = numpy.rint(predictions)
 
-    return y_pred, class_dictionary
+    return y_pred, one_hot
     
     # print("예측값: %s" %(y_pred))
     # 테스트 정확도 출력
