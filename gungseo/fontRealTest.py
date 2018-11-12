@@ -18,8 +18,11 @@ from .img_preprocessing import getTextImages
 
 #데이터 로드
 class getFontInfo:
-  def __init__(self, uploaded_file_url):
-    self.img_url = uploaded_file_url[1:]
+  # def __init__(self, uploaded_file_url):
+  #   self.img_url = uploaded_file_url[1:]
+  def __init__(self, img):
+    self.img = img
+
 
   def preprocessing(self, new_path):
     if not os.path.exists(new_path):
@@ -28,9 +31,9 @@ class getFontInfo:
     # fontFile=[k for k in listdir(path) if isfile(join(path, k)) and not k[0]=='.']
     getImages = getTextImages(new_path)
     # for file in fontFile:
-    img = cv2.imread(self.img_url)
-    print(self.img_url)
-    getImages.get_texts(img)
+    # img = cv2.imread(self.img_url)
+    # print(self.img_url)
+    getImages.get_texts(self.img)
     print('전처리 끝')
 
   def decision(self):
@@ -47,11 +50,15 @@ class getFontInfo:
     model = load_model('gungseo/fontModel.h5')
     #테스트 셋 예측
     predictions = model.predict_generator(test_generator, steps=1)
+    #클래스 이름 get
+    class_dictionary = test_generator.class_indices
+    #클리어
     K.clear_session()
     #예측값 저장
     y_pred = numpy.rint(predictions)
 
-    return y_pred
+    return y_pred, class_dictionary
+    
     # print("예측값: %s" %(y_pred))
     # 테스트 정확도 출력
     # scores = model.evaluate_generator(test_generator, steps=)

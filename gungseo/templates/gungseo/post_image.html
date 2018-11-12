@@ -1,44 +1,99 @@
 {% extends 'gungseo/application.html' %}
 {% block content %}
 
-<h2><b>이미지 미리보기2222</b></h2>
-<div class="preview_wrap">
+<h2><b>이미지 미리보기</b></h2>
+<div class="upload_wrap">
 	<p class="title">이미지 업로드</p>
-	<input type="file" id="input_img" />
-	<div class="img_wrap">
-    	<img id="img" />
+  <form method="post" action={% url 'result' %} enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    {{ form.as_p}}
+    <div class="hidden_submit">
+      <input id="x1" type="hidden" name="x1">
+      <input id="y1" type="hidden" name="y1">
+      <input id="x2" type="hidden" name="x2">
+      <input id="y2" type="hidden" name="y2">
     </div>
-   <div class="icon">
-   	<i class="fas fa-crop-alt"></i>
-   	<i class="fas fa-hand-point-up"></i>
-   	<i class="fas fa-times"></i>
-   	<i class="fas fa-sync-alt"></i>
-   	<i class="fas fa-arrow-circle-right"></i>
-   </div>
+  	<div class="preview_wrap">
+      	<img id="preview" />
+    </div>
+    <div class="icon">
+     	<i class="fas fa-crop-alt"></i>
+     	<i class="fas fa-hand-point-up"></i>
+     	<i class="fas fa-times"></i>
+     	<i class="fas fa-sync-alt"></i>
+     	<button type="submit"><i class="fas fa-arrow-circle-right"></i></button>
+    </div>
+  </form>
 </div>
-
- 
-<h1>New File</h1>
-<form method="post" action={% url 'result' %} enctype="multipart/form-data" novalidate>
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Upload</button>
-</form>
-
 <script type="text/javascript">
-	var sel_file;
+  //variable 선언
+	var sel_file, target, resize_flag=false, crop_flag=false, upload_flag= false;
+  var jcrop_api;
+
 	$(document).ready(function(){
+    // 프리뷰숨기기
+    $(".preview_wrap").hide();
+
 		// imageUpload & preview
-		$("#input_img").on("change", handleImgFileSelect);
+		$(".input_img").on("change", handleImgFileSelect);
 
 		// image remove
 		$(".fa-times").click(function(){
-			$("#img").attr("src", null);
-			$("#input_img").val("");});
+      if(crop_flag == true){
+        jcrop_api.destroy();
+        crop_flag = false;
+      }
+      if(resize_flag == true){
+        $("#preview").resizable('destroy');
+        $("#preview").height(300);
+        $("#preview").width(300);
+        resize_flag = false;
+      }
+      $("#preview").removeAttr('src');
+			$(".input_img").val("");
+      $(".input_img").show();
+      $(".preview_wrap").hide();
+      upload_flag = false;
+    });
 		
 		// image refreshing
 		$(".fa-sync-alt").click(function(){
-			$("#input_img").on("change", handleImgFileSelect);});
+      if(crop_flag == true){
+        jcrop_api.destroy();
+        crop_flag = false;
+      }
+      if(resize_flag == true){
+        $("#preview").resizable('destroy');
+        $("#preview").height(300);
+        $("#preview").width(300);
+      }
+      $("#preview").attr("src", target);
+      
+    });
+    // image resizing
+    $(".fa-hand-point-up").click(function(){
+      if(crop_flag == true){
+        crop_flag = false;
+        jcrop_api.destroy();
+      }
+      else{
+        resize_flag = true;
+        $( "#preview" ).resizable({
+        containment: ".preview_wrap"});
+      }
+    });
+    // image crop
+    $(".fa-crop-alt").click(function(){
+      if(crop_flag == false && upload_flag == true){
+        crop_flag = true;
+        $("#preview").Jcrop({
+          onChange: updateCoords,
+          onSelect: updateCoords,
+          bgOpacity: 0.5,
+          setSelect: [100,100,200,200]
+        },function(){jcrop_api = this;});
+      }
+    });
 	});
 
 	function handleImgFileSelect(e){
@@ -52,12 +107,35 @@
 			sel_file = f;
 			var reader = new FileReader();
 			reader.onload = function(e){
-				$("#img").attr("src", e.target.result);
+        target = e.target.result;
+				$("#preview, img.jcrop-preview, .jcrop-holder img").attr("src", target);
+        $(".input_img").hide();
+        $(".preview_wrap").show();
+
+        upload_flag = true;
 			}
 			reader.readAsDataURL(f);
 		});
 	}
-	
-	
+
+  function updateCoords(c){
+    var x1, y1, x2, y2;
+    var origin_h= document.querySelector('#preview').naturalHeight;
+    var origin_w= document.querySelector('#preview').naturalWidth;
+    var img_w = $('#preview').width(), img_h= $('#preview').height();
+    var ratioX= origin_w/img_w, ratioY= origin_h/img_h;
+
+    x1 = Math.round(c.x * ratioX);
+    y1 = Math.round(c.y * ratioY);
+    x2 = Math.round(c.x2 * ratioX);
+    y2 = Math.round(c.y2 * ratioY);
+
+    $("#x1").val(x1);
+    $("#y1").val(y1);
+    $("#x2").val(x2);
+    $("#y2").val(y2);
+
+    console.log("x1 :"+x1+" y1 :"+y1+" x2 "+x2+" y2: "+y2);
+  }
 </script>
 {% endblock %} 
