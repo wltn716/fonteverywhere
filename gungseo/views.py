@@ -4,7 +4,6 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponseRedirect
 from .fontRealTest import getFontInfo
-from PIL import Image
 import cv2
 
 
@@ -35,9 +34,9 @@ def result(request):
 			cv2.imwrite(uploaded_file_url[1:],cropped_img)
 			
 			gfi = getFontInfo(cropped_img)
-			analysis_result = gfi.decision()
+			analysis_result, class_indices = gfi.decision()
 
-			return render(request, 'gungseo/result.html', {'uploaded_file_url':uploaded_file_url, 'analysis_result':analysis_result})
+			return render(request, 'gungseo/result.html', {'uploaded_file_url':uploaded_file_url, 'analysis_result':analysis_result, 'class_indices':class_indices})
 	
 	else:
 		return HttpResponseRedirect(request.META.get('HTTP_REFERER','/'))
