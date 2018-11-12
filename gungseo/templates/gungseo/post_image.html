@@ -29,13 +29,16 @@
   //variable 선언
 	var sel_file, target, resize_flag=false, crop_flag=false, upload_flag= false;
   var jcrop_api;
+  var origin_w, origin_h;
 
 	$(document).ready(function(){
     // 프리뷰숨기기
     $(".preview_wrap").hide();
 
 		// imageUpload & preview
-		$(".input_img").on("change", handleImgFileSelect);
+		// $(".input_img").on("change", handleImgFileSelect);
+    $('.input_img').on('change', handleImgFileSelect);
+    
 
 		// image remove
 		$(".fa-times").click(function(){
@@ -107,21 +110,29 @@
 			sel_file = f;
 			var reader = new FileReader();
 			reader.onload = function(e){
-        target = e.target.result;
-				$("#preview, img.jcrop-preview, .jcrop-holder img").attr("src", target);
+        var image = new Image();
+        image.src = e.target.result;
+				$("#preview, img.jcrop-preview, .jcrop-holder img").attr("src", image.src); 
         $(".input_img").hide();
         $(".preview_wrap").show();
-
+        image.onload = function() {
+            origin_w = this.width;
+            origin_h = this.height
+            $("#x1").val(0);
+            $("#y1").val(0);
+            $("#x2").val(origin_w);
+            $("#y2").val(origin_h);  
+        };
         upload_flag = true;
 			}
 			reader.readAsDataURL(f);
+
+
 		});
 	}
 
   function updateCoords(c){
     var x1, y1, x2, y2;
-    var origin_h= document.querySelector('#preview').naturalHeight;
-    var origin_w= document.querySelector('#preview').naturalWidth;
     var img_w = $('#preview').width(), img_h= $('#preview').height();
     var ratioX= origin_w/img_w, ratioY= origin_h/img_h;
 
