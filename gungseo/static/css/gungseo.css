@@ -1,0 +1,11 @@
+
+.header {
+  padding: 10px;
+  text-align: left;
+  background-size: 150px;
+
+  color: #ffffff;
+}
+.body {  
+	background-image: url(/media/bg.png); 
+}

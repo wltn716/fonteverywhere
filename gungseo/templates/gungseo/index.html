@@ -1,4 +1,87 @@
 {% extends 'gungseo/application.html' %}
 {% block content %}
-<h1>메인페이지에효</h1>
+
+
+<html>
+<!--궁금해서체 LOGO-->
+<div class="header">
+  <img src="/media/logo.PNG">
+</div>
+  
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script>
+      $(document).ready(function(){
+        // Add smooth scrolling to all links
+        $("a").on('click', function(event) {
+
+          // Make sure this.hash has a value before overriding default behavior
+          if (this.hash !== "") {
+            // Prevent default anchor click behavior
+            event.preventDefault();
+
+            // Store hash
+            var hash = this.hash;
+
+            // Using jQuery's animate() method to add smooth page scroll
+            // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
+            $('html, body').animate({
+              scrollTop: $(hash).offset().top
+            }, 100, function(){
+         
+              // Add hash (#) to URL when done scrolling (default click behavior)
+              window.location.hash = hash;
+            });
+          } // End if
+        });
+      });
+      </script>
+
+   <style>
+  body, html, .main {
+      height: 80%;
+      padding: 40px;
+  }
+
+  section {
+      min-height: 80%;
+  }
+  </style>
+</head>
+
+<body>
+   <!--글꼴찾기 버튼-->
+  <p align="right">그때 봤던 그 글꼴, 저희가 찾아드릴게요.</p>
+  <a href="http://127.0.0.1:8000/post_image"><img src="/media/b_1.PNG" align="right"></a> 
+  <br></br>
+
+
+   <!--더 알아보기 버튼-->
+  <p align="right">궁서체는 딥러닝을 이용한 글꼴분석 웹 서비스 입니다.</p>             
+  <a href="#section2"><img src="/media/b_2.PNG" align="right" ></a> 
+
+  <div class="main"> 
+    <section style="background-color:white">
+    </section>
+  </div>
+
+
+   <!--더 알아보기 -->
+  <div class="main" id="section2">
+    <section style="background-color:white" align="center">
+      <br></br><br></br>
+      <p style="font-size:20px; font-family:Gothic";>궁서체는 심층 학습(deep learning)을 도입해 </p>
+      <p style="font-size:20px; font-family:Gothic";>빠르고 정확하게 한글 서체를 식별해주는 한글 서체 서비스입니다.</p>
+      <p style="font-size:20px; font-family:Gothic";>궁서체를 통해 쉽고 편리하게 원하는 폰트를 찾아보세요.</p>
+      <p style="font-size:20px; font-family:Gothic";>문서, 포스터 디자인의 혁명! 궁서체와 함께하세요.</p>  
+      <br></br><br></br>
+
+
+    <!--궁서체 이용방법-->
+      <img src="/media/howto.PNG" align="center">
+    </section>
+  </div>
+</body>
+</html>
+
 {% endblock %} 
