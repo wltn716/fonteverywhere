@@ -7,6 +7,9 @@ from .fontRealTest import getFontInfo
 import cv2
 
 
+from .img_preprocessing import getTextImages
+import cv2
+
 def index(request):
 	return render(request, 'gungseo/index.html', {})
 

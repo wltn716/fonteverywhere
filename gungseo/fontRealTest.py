@@ -12,6 +12,7 @@ import numpy
 import os
 import tensorflow as tf
 import cv2
+from keras import backend as K
 from .img_preprocessing import getTextImages
 
 
@@ -51,9 +52,13 @@ class getFontInfo:
     predictions = model.predict_generator(test_generator, steps=1)
     #클래스 이름 get
     class_dictionary = test_generator.class_indices
+    #클리어
+    K.clear_session()
     #예측값 저장
     y_pred = numpy.rint(predictions)
-    return y_pred , class_dictionary
+
+    return y_pred, class_dictionary
+    
     # print("예측값: %s" %(y_pred))
     # 테스트 정확도 출력
     # scores = model.evaluate_generator(test_generator, steps=)
