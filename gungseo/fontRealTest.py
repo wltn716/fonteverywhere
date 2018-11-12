@@ -17,8 +17,11 @@ from .img_preprocessing import getTextImages
 
 #데이터 로드
 class getFontInfo:
-  def __init__(self, uploaded_file_url):
-    self.img_url = uploaded_file_url[1:]
+  # def __init__(self, uploaded_file_url):
+  #   self.img_url = uploaded_file_url[1:]
+  def __init__(self, img):
+    self.img = img
+
 
   def preprocessing(self, new_path):
     if not os.path.exists(new_path):
@@ -27,9 +30,9 @@ class getFontInfo:
     # fontFile=[k for k in listdir(path) if isfile(join(path, k)) and not k[0]=='.']
     getImages = getTextImages(new_path)
     # for file in fontFile:
-    img = cv2.imread(self.img_url)
-    print(self.img_url)
-    getImages.get_texts(img)
+    # img = cv2.imread(self.img_url)
+    # print(self.img_url)
+    getImages.get_texts(self.img)
     print('전처리 끝')
 
   def decision(self):

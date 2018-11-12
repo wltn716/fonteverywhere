@@ -7,6 +7,12 @@
   <form method="post" action={% url 'result' %} enctype="multipart/form-data" novalidate>
     {% csrf_token %}
     {{ form.as_p}}
+    <div class="hidden_submit">
+      <input id="x1" type="hidden" name="x1">
+      <input id="y1" type="hidden" name="y1">
+      <input id="x2" type="hidden" name="x2">
+      <input id="y2" type="hidden" name="y2">
+    </div>
   	<div class="preview_wrap">
       	<img id="preview" />
     </div>
@@ -17,19 +23,12 @@
      	<i class="fas fa-sync-alt"></i>
      	<button type="submit"><i class="fas fa-arrow-circle-right"></i></button>
     </div>
-    <div class="hidden_submit">
-      <input id="x" type="hidden" name="x">
-      <input id="y" type="hidden" name="y">
-      <input id="w" type="hidden" name="w">
-      <input id="h" type="hidden" name="h">
-    </div>
   </form>
 </div>
 <script type="text/javascript">
   //variable 선언
 	var sel_file, target, resize_flag=false, crop_flag=false, upload_flag= false;
-  
-  var jcrop_api, boundx, boundy;
+  var jcrop_api;
 
 	$(document).ready(function(){
     // 프리뷰숨기기
@@ -109,9 +108,10 @@
 			var reader = new FileReader();
 			reader.onload = function(e){
         target = e.target.result;
-				$("#preview, img.jcrop-preview, .jcrop-holder img .submit_img").attr("src", target);
+				$("#preview, img.jcrop-preview, .jcrop-holder img").attr("src", target);
         $(".input_img").hide();
         $(".preview_wrap").show();
+
         upload_flag = true;
 			}
 			reader.readAsDataURL(f);
@@ -119,18 +119,23 @@
 	}
 
   function updateCoords(c){
-    var x, y, x2, y2;
-    x = c.x;
-    y = c.y;
-    w = c.w;
-    h = c.h;
-    $("#x").val(x);
-    $("#y").val(y);
-    $("#w").val(w);
-    $("#h").val(h);
-    console.log("x :"+x+" y :"+y+" w: "+w+" h: "+h);
+    var x1, y1, x2, y2;
+    var origin_h= document.querySelector('#preview').naturalHeight;
+    var origin_w= document.querySelector('#preview').naturalWidth;
+    var img_w = $('#preview').width(), img_h= $('#preview').height();
+    var ratioX= origin_w/img_w, ratioY= origin_h/img_h;
+
+    x1 = Math.round(c.x * ratioX);
+    y1 = Math.round(c.y * ratioY);
+    x2 = Math.round(c.x2 * ratioX);
+    y2 = Math.round(c.y2 * ratioY);
+
+    $("#x1").val(x1);
+    $("#y1").val(y1);
+    $("#x2").val(x2);
+    $("#y2").val(y2);
+
+    console.log("x1 :"+x1+" y1 :"+y1+" x2 "+x2+" y2: "+y2);
   }
 </script>
-
-<!-- 좌표값알아내기, 이미지크롭하면서 리사이징 -->
 {% endblock %} 

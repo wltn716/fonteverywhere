@@ -12,25 +12,3 @@
   width: 300px;
   height: 300px;
 }
-
-/* Apply these styles only when #preview-pane has
-   been placed within the Jcrop widget */
-.jcrop-holder #preview-pane {
-  display: block;
-  position: absolute;
-  z-index: 2000;
-  top: 10px;
-  right: -210px;
-  background-color: #fff;
-  padding: 6px;
-  border: 1px solid #bcbcbc;
-}
-
-/* The Javascript code will set the aspect ratio of the crop
-   area based on the size of the thumbnail preview,
-   specified here */
-#preview-pane .preview-container {
-  width: 150px;
-  height: 150px;
-  overflow: hidden;
-}

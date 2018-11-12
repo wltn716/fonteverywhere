@@ -5,7 +5,8 @@ from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponseRedirect
 from .fontRealTest import getFontInfo
 from PIL import Image
-import io
+import cv2
+
 
 def index(request):
 	return render(request, 'gungseo/index.html', {})
@@ -18,18 +19,22 @@ def result(request):
 	if request.method == 'POST':
 		form = UploadFileForm(request.POST, request.FILES)
 		if form.is_valid():
-			x = int(request.POST['x'])
-			y = int(request.POST['y'])
-			w = int(request.POST['w'])
-			h = int(request.POST['h'])
-			
+			x1 = int(request.POST['x1'])
+			y1 = int(request.POST['y1'])
+			x2 = int(request.POST['x2'])
+			y2 = int(request.POST['y2'])
+
 			file = request.FILES['file']
 
 			fs = FileSystemStorage()
 			filename = fs.save(file.name, file)
 			uploaded_file_url = fs.url(filename)
+
+			cropped_img = cv2.imread(uploaded_file_url[1:])
+			cropped_img = cropped_img[y1:y2, x1:x2]
+			cv2.imwrite(uploaded_file_url[1:],cropped_img)
 			
-			gfi = getFontInfo(uploaded_file_url)
+			gfi = getFontInfo(cropped_img)
 			analysis_result = gfi.decision()
 
 			return render(request, 'gungseo/result.html', {'uploaded_file_url':uploaded_file_url, 'analysis_result':analysis_result})
