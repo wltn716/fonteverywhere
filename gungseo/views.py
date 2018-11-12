@@ -30,10 +30,10 @@ def result(request):
 
 			fs = FileSystemStorage()
 			filename = fs.save(file.name, file)
-			uploaded_file_url = fs.url(filename)
-
+			uploaded_file_url = '/media/'+filename
 			cropped_img = cv2.imread(uploaded_file_url[1:])
-			cropped_img = cropped_img[y1:y2, x1:x2]
+			cropped_img = cropped_img[y1:y2, x1:x2]	
+			
 			cv2.imwrite(uploaded_file_url[1:],cropped_img)
 			
 			gfi = getFontInfo(cropped_img)
