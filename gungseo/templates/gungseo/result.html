@@ -3,6 +3,7 @@
 <h1>결과 페이지에효</h1>
 <h1>이미지</h1>
 <p><img src="{{ uploaded_file_url }}" alt="uploaded_file_url"></p>
-{{ analysis_result }}
-{{ class_name }}
+{% for font_name in top_three %}
+		<p>{{ font_name }}</p>
+{% endfor %}
 {% endblock %} 

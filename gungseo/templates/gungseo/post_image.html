@@ -27,7 +27,7 @@
 </div>
 <script type="text/javascript">
   //variable 선언
-	var sel_file, target, resize_flag=false, crop_flag=false, upload_flag= false;
+	var sel_file, target_image, resize_flag=false, crop_flag=false, upload_flag= false;
   var jcrop_api;
   var origin_w, origin_h;
 
@@ -36,9 +36,7 @@
     $(".preview_wrap").hide();
 
 		// imageUpload & preview
-		// $(".input_img").on("change", handleImgFileSelect);
     $('.input_img').on('change', handleImgFileSelect);
-    
 
 		// image remove
 		$(".fa-times").click(function(){
@@ -58,32 +56,16 @@
       $(".preview_wrap").hide();
       upload_flag = false;
     });
-		
-		// image refreshing
-		$(".fa-sync-alt").click(function(){
-      if(crop_flag == true){
-        jcrop_api.destroy();
-        crop_flag = false;
-      }
-      if(resize_flag == true){
-        $("#preview").resizable('destroy');
-        $("#preview").height(300);
-        $("#preview").width(300);
-      }
-      $("#preview").attr("src", target);
-      
-    });
     // image resizing
     $(".fa-hand-point-up").click(function(){
       if(crop_flag == true){
         crop_flag = false;
         jcrop_api.destroy();
       }
-      else{
-        resize_flag = true;
-        $( "#preview" ).resizable({
-        containment: ".preview_wrap"});
-      }
+      resize_flag = true;
+      $( "#preview" ).resizable({
+         handles : 'n,e,s,w',
+         containment: ".preview_wrap"});
     });
     // image crop
     $(".fa-crop-alt").click(function(){
@@ -97,7 +79,29 @@
         },function(){jcrop_api = this;});
       }
     });
-	});
+    // image refreshing
+    $("#preview").attr("src", target_image);
+    $(".input_img").val(target_image);
+
+    $(".fa-sync-alt").click(function(){
+      if(crop_flag == true){
+        // 전달하는 x1,x2,y1,y2좌표를 초기화해서 전달하는 방법으로 하기
+        $("#x1").val(0);
+        $("#y1").val(0);
+        $("#x2").val(origin_w);
+        $("#y2").val(origin_h);  
+        jcrop_api.destroy();
+        crop_flag = false;
+      }
+      if(resize_flag == true){
+        $("#preview").resizable('destroy');
+        $("#preview").height(300).width(300).css({
+           "position" : "relative",
+           "top" : "0px",
+           "left" : "0px"
+        });}
+    });
+	})
 
 	function handleImgFileSelect(e){
 		var files = e.target.files;
@@ -110,12 +114,12 @@
 			sel_file = f;
 			var reader = new FileReader();
 			reader.onload = function(e){
-        var image = new Image();
-        image.src = e.target.result;
-				$("#preview, img.jcrop-preview, .jcrop-holder img").attr("src", image.src); 
+        target_image = new Image();
+        target_image.src = e.target.result;
+				$("#preview, img.jcrop-preview, .jcrop-holder img").attr("src", target_image.src); 
         $(".input_img").hide();
         $(".preview_wrap").show();
-        image.onload = function() {
+        target_image.onload = function() {
             origin_w = this.width;
             origin_h = this.height
             $("#x1").val(0);
