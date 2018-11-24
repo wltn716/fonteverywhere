@@ -1,11 +1,38 @@
-
-.header {
-  padding: 10px;
-  text-align: left;
-  background-size: 150px;
-
-  color: #ffffff;
+@font-face {
+	font-family: 'NewGungseo';
+	src: url(../font/NewGungseo/aNewGungseoM.ttf) format('truetype');
 }
-.body {  
-	background-image: url(/media/bg.png); 
+
+@font-face {
+	font-family: 'NotoSerif';
+	src: url(../font/NotoSerif/NotoSerifCJKkr-Regular.otf) format('truetype');
+}
+
+*{
+	box-sizing: border-box !important;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {  
+	margin: 0;
+}
+
+a{
+	text-decoration: none;
+	  color: inherit;
+}
+
+.vertical_center{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.container{
+	display: flex;
+	justify-content: space-evenly;
+	flex-wrap: wrap;
 }

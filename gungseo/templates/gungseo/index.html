@@ -1,85 +1,87 @@
-{% extends 'gungseo/application.html' %}
-{% block content %}
+{% load staticfiles %}
+<!DOCTYPE html>
 <html>
-<!--궁금해서체 LOGO-->
-<div class="header">
-  <img src="/media/logo.PNG">
-</div>
-  
-<head>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-      <script>
-      $(document).ready(function(){
-        // Add smooth scrolling to all links
-        $("a").on('click', function(event) {
+  <head>
+    <title>궁서체</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  </head>
+  <body>
+    <section class="index_sec_1 vertical_center" id ='sec1' align='center'>    
+        <p><span>서체 찾아주는 인공지능 사진검색 서-비스</span></p>
+        <div id="main_logo"></div>
+        <div class="links">
+          <p><a href='#sec2'><font>궁<font>금해</font>서체</font>가 처음이라면?</a></p>
+          <p><a href='/post_image'>사진속의 서체가 궁금하다면?</a></p>
+        </div>
+    </section>
 
-          // Make sure this.hash has a value before overriding default behavior
-          if (this.hash !== "") {
-            // Prevent default anchor click behavior
-            event.preventDefault();
+    <section class="index_sec_2 vertical_center" id='sec2'>
+      <div class='quotes fade'><img src="{% static 'image/quote1.png' %}" alt='quote1'/></div>
+      <div class='description fade'>
+        <p><font>궁<font>금해</font>서체</font>는 심층 학습(Deep Learning)을 도입해
+빠르고 정확하게 한글 서체를 식별해주는 한글 서체 정보 서비스 입니다.
+궁금해서체를 통해 쉽고 편리하게 원하는 폰트를 찾아보세요.</p>
+        <p>폰트검색서비스의 혁명! <font>궁<font>금해</font>서체</font>와 함께하세요.</p>
+      </div>
+      <div class='quotes fade'><img src="{% static 'image/quote2.png' %}" alt='quote2'/></div>
+    </section>
 
-            // Store hash
-            var hash = this.hash;
+    <section class="index_sec_3" id='sec3'>
+      <h1 class="fade"><font>세 단계</font>만 거치면,
+      원하는 서체를 찾을 수 있어요.</h1>
+      <div class="container">
+        <article class="fade">
+          <h1>1.</h1>
+          <div>
+            <img src="{% static 'image/add_image.png' %}" alt='add_image'/>
+            <p align="left">궁금한 서체가 담긴
+            이미지 파일을
+            업로드 합니다.</p>
+          </div>
+        </article>
+        <article class="fade">
+          <h1>2.</h1>
+          <div>
+            <img src="{% static 'image/edit.png' %}" alt='edit'/>
+            <p align="left">업로드한 이미지를
+            편집하고
+          서체부분을 크롭합니다.</p>
+          </div>
+        </article>
+        <article class="fade">
+          <h1>3.</h1>
+          <div>
+            <img src="{% static 'image/font.png' %}" alt='font'/>
+            <p align="left">궁금한 서체정보를
+            조회합니다.</p>
+          </div>
+        </article>
+      </div>
+      <div class="button"><a href="#sec1" class="fade">맨 위로 올라가기</a> <a href="/post_image" class="fade">서체 찾으러 가기!</a> </div>
+    </section>
 
-            // Using jQuery's animate() method to add smooth page scroll
-            // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
-            $('html, body').animate({
-              scrollTop: $(hash).offset().top
-            }, 100, function(){
-         
-              // Add hash (#) to URL when done scrolling (default click behavior)
-              window.location.hash = hash;
-            });
-          } // End if
-        });
+
+
+
+    <script>
+      $(window).on("load",function() {
+        $(window).scroll(function() {
+          var windowBottom = $(this).scrollTop() + $(this).innerHeight();
+          $(".fade").each(function() {
+            /* Check the location of each desired element */
+            var objectBottom = $(this).offset().top + $(this).outerHeight();
+            
+            /* If the element is completely within bounds of the window, fade it in */
+            if (objectBottom < windowBottom) { //object comes into view (scrolling down)
+              if ($(this).css("opacity")==0) {$(this).fadeTo(700,1);}
+            } else { //object goes out of view (scrolling up)
+              if ($(this).css("opacity")==1) {$(this).fadeTo(700,0);}
+            }
+          });
+        }).scroll(); //invoke scroll-handler on page-load
       });
-      </script>
-
-   <style>
-  body, html, .main {
-      height: 80%;
-      padding: 40px;
-  }
-
-  section {
-      min-height: 80%;
-  }
-  </style>
-</head>
-
-<body>
-   <!--글꼴찾기 버튼-->
-  <p align="right">그때 봤던 그 글꼴, 저희가 찾아드릴게요.</p>
-  <a href="http://127.0.0.1:8000/post_image"><img src="/media/b_1.PNG" align="right"></a> 
-  <br></br>
-
-
-   <!--더 알아보기 버튼-->
-  <p align="right">궁서체는 딥러닝을 이용한 글꼴분석 웹 서비스 입니다.</p>             
-  <a href="#section2"><img src="/media/b_2.PNG" align="right" ></a> 
-
-  <div class="main"> 
-    <section style="background-color:white">
-    </section>
-  </div>
-
-
-   <!--더 알아보기 -->
-  <div class="main" id="section2">
-    <section style="background-color:white" align="center">
-      <br></br><br></br>
-      <p style="font-size:26px; font-family:Gothic";>궁서체란? </p>
-      <p style="font-size:20px; font-family:Gothic";>궁서체는는 심층 학습(deep learning)을 도입해 </p>
-      <p style="font-size:20px; font-family:Gothic";>빠르고 정확하게 한글 서체를 식별해주는 한글 서체 서비스입니다.</p>
-      <p style="font-size:20px; font-family:Gothic";>궁서체를 통해 쉽고 편리하게 원하는 폰트를 찾아보세요.</p>
-      <p style="font-size:20px; font-family:Gothic";>문서, 포스터 디자인의 혁명! 궁서체와 함께하세요.</p>  
-      <br></br>
-
-
-    <!--궁서체 이용방법-->
-      <img src="/media/howto.PNG" align="center">
-    </section>
-  </div>
-</body>
+    </script>
+  </body>
 </html>
-{% endblock %} 

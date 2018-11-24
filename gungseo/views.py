@@ -1,3 +1,5 @@
+import shutil
+import os
 from django.shortcuts import render
 from .forms import UploadFileForm
 from django.conf import settings
@@ -5,10 +7,8 @@ from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponseRedirect
 from .fontRealTest import getFontInfo
 import cv2
-
-
 from .img_preprocessing import getTextImages
-import cv2
+
 
 def index(request):
 	return render(request, 'gungseo/index.html', {})
@@ -51,6 +51,8 @@ def result(request):
 				class_name = "훈화양연화"	
 			else :
 				class_name = "찾을 수 없습니다."
+				
+			shutil.rmtree('newmedia/new/')
 
 			return render(request, 'gungseo/result.html', {'uploaded_file_url':uploaded_file_url, 'analysis_result':analysis_result, 'class_name':class_name})
 	
