@@ -31,30 +31,37 @@ def result(request):
 			fs = FileSystemStorage()
 			filename = fs.save(file.name, file)
 			uploaded_file_url = '/media/'+filename
+			
 			cropped_img = cv2.imread(uploaded_file_url[1:])
 			cropped_img = cropped_img[y1:y2, x1:x2]	
 			
 			cv2.imwrite(uploaded_file_url[1:],cropped_img)
 			
 			gfi = getFontInfo(cropped_img)
-			analysis_result, one_hot = gfi.decision()
 
-			if one_hot == 0 :
-				class_name = "궁서체"
-			elif one_hot == 1 :
-				class_name = "나눔손글씨붓"
-			elif one_hot == 2 :
-				class_name = "썸타임"
-			elif one_hot == 3 :
-				class_name = "포천오성과한음"
-			elif one_hot == 4 :
-				class_name = "훈화양연화"	
-			else :
-				class_name = "찾을 수 없습니다."
-				
+			analysis_result= gfi.decision()
+
+			#결과값 reshape 
+			#(ex) from [[0.1, 0.1, 0.1, 0.1, 0.1]] to [[0.1],[0.1],[0.1],[0.1],[0.1]]
+			analysis_result = analysis_result.reshape((8,1))
+			#reshape한 결과값 리스트화
+			analysis_result = analysis_result.tolist(); 
+			font_name = ['궁서체' , '나눔손글씨붓', '맑은고딕', '바탕', '썸타임', '포천오성과한음', '한나는열한살', '훈화양연화']
+			#두 개의 리스트 각각 키와 밸류로 딕셔너리 만들기 => 폰트이름 , 확률값 쌍 생성
+			font_dict = dict(zip(font_name, analysis_result))
+			#밸류기준 내림차순 정렬
+			font_dict = sorted(font_dict.items(), key=lambda kv: kv[1], reverse=True)
+			#가능성이 가장 큰 탑 쓰리의 키값(폰트이름) 저장
+			top_three = list()
+			for key, val in font_dict[:3] :
+				top_three.append(key)
+
+
+			#가장확률이 높은 클래스의 인덱스
+			# one_hot = analysis_result.argmax(axis=-1)	
+
 			shutil.rmtree('newmedia/new/')
 
-			return render(request, 'gungseo/result.html', {'uploaded_file_url':uploaded_file_url, 'analysis_result':analysis_result, 'class_name':class_name})
-	
+			return render(request, 'gungseo/result.html', {'uploaded_file_url':uploaded_file_url, 'top_three':top_three})
 	else:
 		return HttpResponseRedirect(request.META.get('HTTP_REFERER','/'))

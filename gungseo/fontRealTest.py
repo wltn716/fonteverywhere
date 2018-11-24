@@ -10,6 +10,7 @@ from keras.models import load_model
 # import matplotlib.pyplot as plt
 import numpy
 import os
+import shutil
 import tensorflow as tf
 import cv2
 from keras import backend as K
@@ -50,14 +51,12 @@ class getFontInfo:
     model = load_model('gungseo/fontModel.h5')
     #테스트 셋 예측
     predictions = model.predict_generator(test_generator, steps=1)
-    #원핫인코딩 결과
-    one_hot = predictions.argmax(axis=-1)
     #클리어
     K.clear_session()
     #예측값 저장
-    y_pred = numpy.rint(predictions)
-
-    return y_pred, one_hot
+    y_pred = predictions
+    
+    return y_pred
     
     # print("예측값: %s" %(y_pred))
     # 테스트 정확도 출력
