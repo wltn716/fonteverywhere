@@ -1,30 +1,56 @@
 {% extends 'gungseo/application.html' %}
+{% load staticfiles %}
 {% block content %}
+<section class="vertical_center">
+  <div class="upload_wrap">
+    <form method="post" action="{% url 'result' %}" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      <div class="input_img vertical_center">
+        {{ form.as_p }}
+        <img src="{% static 'image/up-arrow.png' %}" alt="upload">
+        <p>여기에 이미지를 끌어 놓으세요.</p>
+        <p>혹은 <span>이곳을 클릭하세요!</span></p>
+      </div>
 
-<h2><b>이미지 미리보기</b></h2>
-<div class="upload_wrap">
-	<p class="title">이미지 업로드</p>
-  <form method="post" action={% url 'result' %} enctype="multipart/form-data" novalidate>
-    {% csrf_token %}
-    {{ form.as_p}}
-    <div class="hidden_submit">
-      <input id="x1" type="hidden" name="x1">
-      <input id="y1" type="hidden" name="y1">
-      <input id="x2" type="hidden" name="x2">
-      <input id="y2" type="hidden" name="y2">
-    </div>
-  	<div class="preview_wrap">
-      	<img id="preview" />
-    </div>
-    <div class="icon">
-     	<i class="fas fa-crop-alt"></i>
-     	<i class="fas fa-hand-point-up"></i>
-     	<i class="fas fa-times"></i>
-     	<i class="fas fa-sync-alt"></i>
-     	<button type="submit"><i class="fas fa-arrow-circle-right"></i></button>
-    </div>
-  </form>
-</div>
+      <div class="preview_wrap">
+          <img id="preview" />
+      </div>
+
+      <div class="hidden_submit">
+        <input id="x1" type="hidden" name="x1">
+        <input id="y1" type="hidden" name="y1">
+        <input id="x2" type="hidden" name="x2">
+        <input id="y2" type="hidden" name="y2">
+      </div>
+      <div class="icon edit">
+        <div class="edit_tool">
+          <i class="fas fa-hand-point-up tooltip">
+            <span class="tooltiptext">크기조절</span>
+          </i>
+         	<i class="fas fa-crop-alt tooltip">
+            <span class="tooltiptext">자르기</span>
+          </i>
+         	<i class="fas fa-sync-alt tooltip">
+            <span class="tooltiptext">새로고침</span>
+          </i>
+          <i class="fas fa-times tooltip">
+            <span class="tooltiptext">삭제</span>
+          </i>
+        </div>
+       	<button type="submit">
+          <i class="fas fa-arrow-circle-right tooltip">
+            <span class="tooltiptext">결과보기</span>
+          </i>
+        </button>
+      </div>
+      <div class="warning">
+        <p>* 이미지에서 분석 대상 글꼴과 상관 없는 부분은 잘라내 주세요.</p>
+        <p>* 배경과 글씨의 구분이 뚜렷할수록 정확도가 올라갑니다 :)</p>
+      </div>
+    </form>
+  </div>
+ </section> 
+
 <script type="text/javascript">
   //variable 선언
 	var sel_file, target_image, resize_flag=false, crop_flag=false, upload_flag= false;
@@ -40,24 +66,28 @@
 
 		// image remove
 		$(".fa-times").click(function(){
+      $(".fas").removeClass('active');
+      $(".edit").removeClass('unblock');
       if(crop_flag == true){
         jcrop_api.destroy();
         crop_flag = false;
       }
       if(resize_flag == true){
         $("#preview").resizable('destroy');
-        $("#preview").height(300);
-        $("#preview").width(300);
+        $("#preview").removeAttr('style');
         resize_flag = false;
       }
       $("#preview").removeAttr('src');
-			$(".input_img").val("");
+			$("input[type='file']").val("");
       $(".input_img").show();
       $(".preview_wrap").hide();
       upload_flag = false;
     });
+
     // image resizing
     $(".fa-hand-point-up").click(function(){
+      $(".fas").removeClass('active');
+      $(this).addClass('active');
       if(crop_flag == true){
         crop_flag = false;
         jcrop_api.destroy();
@@ -67,8 +97,11 @@
          handles : 'n,e,s,w',
          containment: ".preview_wrap"});
     });
+
     // image crop
     $(".fa-crop-alt").click(function(){
+      $(".fas").removeClass('active');
+      $(this).addClass('active');
       if(crop_flag == false && upload_flag == true){
         crop_flag = true;
         $("#preview").Jcrop({
@@ -81,9 +114,12 @@
     });
     // image refreshing
     $("#preview").attr("src", target_image);
-    $(".input_img").val(target_image);
+    $("input[type='file']").val(target_image);
+  
 
     $(".fa-sync-alt").click(function(){
+      $(".fas").removeClass('active');
+      $(this).addClass('active')
       if(crop_flag == true){
         // 전달하는 x1,x2,y1,y2좌표를 초기화해서 전달하는 방법으로 하기
         $("#x1").val(0);
@@ -95,11 +131,8 @@
       }
       if(resize_flag == true){
         $("#preview").resizable('destroy');
-        $("#preview").height(300).width(300).css({
-           "position" : "relative",
-           "top" : "0px",
-           "left" : "0px"
-        });}
+        $("#preview").removeAttr('style');
+      }
     });
 	})
 
@@ -121,7 +154,7 @@
         $(".preview_wrap").show();
         target_image.onload = function() {
             origin_w = this.width;
-            origin_h = this.height
+            origin_h = this.height;
             $("#x1").val(0);
             $("#y1").val(0);
             $("#x2").val(origin_w);
@@ -133,6 +166,8 @@
 
 
 		});
+    $(".fas").removeClass('active');
+    $(".edit").addClass('unblock');
 	}
 
   function updateCoords(c){

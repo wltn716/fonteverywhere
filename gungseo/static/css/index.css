@@ -2,13 +2,7 @@
 
 /***************섹션 1***************/
 .index_sec_1{
-	min-height:100vh;
-	width:100vw;
-	background: url("../image/index_bg_1.png") no-repeat fixed top;
-	background-size: cover;
-
-	font-family : NewGungseo;
-
+	font-family : NotoSerif-bold;
 	padding: 100px 0;
 }
 
@@ -97,6 +91,7 @@
 	animation: fadein 3s;
 }
 .links p a font{
+	font-family: NewGungseo;
 	font-size: 25px;
 	font-weight: 700;
 }
@@ -145,8 +140,6 @@
 
 /***************섹션 2***************/
 .index_sec_2{
-	min-height:100vh;
-	width:100vw;
 	background-color: #d6cdc6;
 	padding: 100px 0;
 }
@@ -166,6 +159,7 @@
 	font-family: NotoSerif;
 	font-size: 25px;
 	color: #565656;
+	position: relative;
 }
 
 .index_sec_2 .description{
@@ -179,14 +173,13 @@
 .index_sec_2 .description font font{
 	font-size: 19px;
 }
+
 /**섹션 2 끝***/
 
 
 /***************섹션 3***************/
 .index_sec_3{
 	padding: 50px 0;
-	min-height:100vh;
-	width:100vw;
 	background-color: #bd9d7e;
 	font-family: NotoSerif;
 	color: #f0e8e1;
@@ -266,6 +259,7 @@
 	font-size:20px;
 	font-weight: 700;
 	text-align: right;
+	font-family: NotoSerif;
 }
 
 .index_sec_3 > .button a{

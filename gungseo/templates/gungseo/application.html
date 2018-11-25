@@ -3,7 +3,6 @@
 <html>
   <head>
     <title>궁서체</title>
-    <link rel=" " href="{% static 'css/gungseo.css' %}">
     <link rel="stylesheet" href="{% static 'css/post_image.css' %}">
 
     <!-- font Awesome -->
@@ -11,7 +10,6 @@
 
     <!-- <script src="https://code.jquery.com/jquery-1.10.2.js"></script> -->
     <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.0.min.js" charset="utf-8"></script>
-
 
     <!-- image crop -->
     <meta http-equiv="Content-type" content="text/html;charset=utf-8">
@@ -29,6 +27,10 @@
 
   </head>
   <body>
+    <div class="header hunminjungum" onclick="location.href='/'">
+        <span><img class="logo_text"src="{% static 'image/logo+text.png' %}" alt="logo+text"></span>
+        <div>김지혜 김혜수 정지수</div>
+    </div>
     {% block content %}
     {% endblock %} 
   </body>

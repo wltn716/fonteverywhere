@@ -8,6 +8,22 @@
 	src: url(../font/NotoSerif/NotoSerifCJKkr-Regular.otf) format('truetype');
 }
 
+@font-face {
+	font-family: 'NotoSerif-Bold';
+	src: url(../font/NotoSerif/NotoSerifCJKkr-Bold.otf) format('truetype');
+}
+
+@font-face {
+	font-family: 'NotoSerif-SemiBold';
+	src: url(../font/NotoSerif/NotoSerifCJKkr-SemiBold.otf) format('truetype');
+}
+
+
+@font-face {
+	font-family: 'NotoSans';
+	src: url(../font/Noto_Sans_KR/NotoSansKR-Light.otf) format('truetype');
+}
+
 *{
 	box-sizing: border-box !important;
 }
@@ -25,14 +41,76 @@ a{
 	  color: inherit;
 }
 
+section{
+	min-height: 100vh;
+	width: 100vw;
+}
+
+p{
+	margin: 0px;
+}
+
 .vertical_center{
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	text-align: center;
 }
 
 .container{
 	display: flex;
 	justify-content: space-evenly;
 	flex-wrap: wrap;
+}
+
+.hunminjungum{
+	background: url("../image/index_bg_1.png") no-repeat fixed top;
+	background-size: cover;
+}
+
+.tooltip{
+	position: relative;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 53px;
+    background-color: #4a3732cc;
+    color: #eee;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 7px;
+    
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+  	left: 0px;
+
+    font-size: 10px;
+    font-family: NotoSerif;
+
+    opacity: 0;
+  	transition: visibility 0s, opacity 0.1s linear;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.logo_text{
+	height: 40px;
+	width: auto;
+}
+
+.header{
+	min-height: 50px;
+	height: 7vh;
+	padding: 5px 15px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-family: NewGungseo;
+	color: #565656;
 }
