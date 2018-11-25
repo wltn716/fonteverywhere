@@ -1,0 +1,12 @@
+.row{
+	display: grid;
+}
+
+.left-half {
+  
+  grid-column: 1;
+}
+
+.right-half {
+  grid-column: 2;
+}

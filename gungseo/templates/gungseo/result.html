@@ -1,9 +1,13 @@
 {% extends 'gungseo/application.html' %}
 {% block content %}
-<h1>결과 페이지에효</h1>
-<h1>이미지</h1>
-<p><img src="{{ uploaded_file_url }}" alt="uploaded_file_url"></p>
-{% for font_name in top_three %}
-		<p>{{ font_name }}</p>
-{% endfor %}
+<section class="content row">
+	<div class="left-half">
+		<img src="{{ uploaded_file_url }}" alt="uploaded_file_url">
+	</div>
+	<div class="right-half">
+		{% for font_name in top_three %}
+				<p>{{ font_name }}</p>
+		{% endfor %}
+	</div>
+</section>
 {% endblock %} 
