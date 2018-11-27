@@ -47,6 +47,7 @@ class getFontInfo:
                                                       color_mode='grayscale',
                                                       batch_size = 1,
                                                       class_mode = 'categorical')
+
     #모델 로드
     model = load_model('gungseo/fontModel.h5')
     #테스트 셋 예측

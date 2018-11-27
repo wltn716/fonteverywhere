@@ -95,7 +95,8 @@
       resize_flag = true;
       $( "#preview" ).resizable({
          handles : 'n,e,s,w',
-         containment: ".preview_wrap"});
+         containment: ".preview_wrap"
+       });
     });
 
     // image crop
@@ -121,7 +122,7 @@
       $(".fas").removeClass('active');
       $(this).addClass('active')
       if(crop_flag == true){
-        // 전달하는 x1,x2,y1,y2좌표를 초기화해서 전달하는 방법으로 하기
+        // 크롭이미지 초기화
         $("#x1").val(0);
         $("#y1").val(0);
         $("#x2").val(origin_w);
@@ -129,9 +130,12 @@
         jcrop_api.destroy();
         crop_flag = false;
       }
+      // 스타일 초기화
       if(resize_flag == true){
         $("#preview").resizable('destroy');
         $("#preview").removeAttr('style');
+        // 프리뷰이미지에 적용된 스타일 모두 삭제
+        resize_flag = false;
       }
     });
 	})

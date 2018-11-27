@@ -102,6 +102,7 @@ p{
 .logo_text{
 	height: 40px;
 	width: auto;
+	cursor: pointer;
 }
 
 .header{
