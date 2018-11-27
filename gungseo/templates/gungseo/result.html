@@ -8,13 +8,15 @@
 	</div>
 	<div class="right-half">
 		<div>
-			{% for key in top_three %}
+			{% for key, value in top_three %}
+				{% if value > 50 %}
 					<article>
 						<h1><span>{{ key }}</span></h1>
-						<h3><!--요 부분에 정확도 나타내는 변수 적으면 돼유-->%</h3>
+						<h3><pre> {{ value }}%</pre></h3>
 						<p></p>
 						<hr>
 					</article>
+				{% endif %}
 			{% endfor %}
 		</div>
 
