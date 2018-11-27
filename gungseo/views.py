@@ -48,13 +48,15 @@ def result(request):
 			analysis_result = analysis_result.tolist(); 
 			font_name = ['궁서체' , '나눔손글씨붓', '맑은고딕', '바탕', '썸타임', '포천오성과한음', '한나는열한살', '훈화양연화']
 			#두 개의 리스트 각각 키와 밸류로 딕셔너리 만들기 => 폰트이름 , 확률값 쌍 생성
-			font_dict = dict(zip(font_name, analysis_result))
+			font_dict = dict(zip(font_name, analysis_result)) 
+			
 			#밸류기준 내림차순 정렬
 			font_dict = sorted(font_dict.items(), key=lambda kv: kv[1], reverse=True)
 			#가능성이 가장 큰 탑 쓰리의 키값(폰트이름) 저장
-			top_three = list()
-			for key, val in font_dict[:3] :
+			top_three =[] 
+			for key, val in font_dict[:3]:
 				top_three.append(key)
+				
 
 
 			#가장확률이 높은 클래스의 인덱스

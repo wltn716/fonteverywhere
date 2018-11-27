@@ -77,3 +77,41 @@ p{
 	min-height:93vh;
 	background-color: #f7f5f3;
 }
+.button{ 
+	margin: 30px 40px 0px 0px;
+	font-size:20px;
+	font-weight: 700;
+	text-align: right;
+	font-family: NotoSerif;
+}
+
+.button a{
+	display: inline-block;
+	margin: 0px 10px 0px 0px;
+	color: #454545;
+	position: relative;
+	z-index: 1;
+
+}
+
+.button a:after{
+	content: "";
+	position: absolute;
+	bottom: 0px;
+  	left: 0px;	
+	width: 0%;
+	height: 90%;
+	z-index: -1;
+	background-color:#7d3849;
+	transition: all 0.3s ease 0s;
+}
+
+.button a:hover{
+	color: #f0e8e1;
+	transition: all 0.3s ease-in-out 0s;
+	/*border: 2px solid #f0e8e1;*/
+}
+
+.button a:hover:after{
+	width: 100%;
+}
