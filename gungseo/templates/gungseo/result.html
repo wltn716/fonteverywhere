@@ -1,9 +1,43 @@
 {% extends 'gungseo/application.html' %}
 {% block content %}
-<h1>결과 페이지에효</h1>
-<h1>이미지</h1>
-<p><img src="{{ uploaded_file_url }}" alt="uploaded_file_url"></p>
-{% for font_name in top_three %}
-		<p>{{ font_name }}</p>
-{% endfor %}
+<section class="content row">
+	<div class="left-half">
+		<div class="img_box">
+			<img src="{{ uploaded_file_url }}" alt="uploaded_file_url">		
+		</div>
+	</div>
+	<div class="right-half">
+		<div>
+			{% for key in top_three %}
+					<article>
+						<h1><span>{{ key }}</span></h1>
+						<h3><!--요 부분에 정확도 나타내는 변수 적으면 돼유-->%</h3>
+						<p></p>
+						<hr>
+					</article>
+			{% endfor %}
+		</div>
+
+		<div class="button"><a href="/post_image">다른 이미지로 찾아보기</a></div>
+	</div>
+</section>
+<script>
+	$(document).ready(function(){
+		var str1 = "멀리 패, 하나에 계십니다. 많은 하나에 어머니, 마디씩 별 까닭입니다. 많은 별 헤일 마디씩 헤는 지나가는 있습니다. 내 아이들의 오는 딴은 나는 밤을 많은 거외다. 이름과 불러 까닭이요, 이름과, 하나에 동경과 까닭입니다. 하늘에는 별빛이 언덕 있습니다. 책상을 이름을 너무나 있습니다."
+		var str2 = "이름을 못 내 노루, 아침이 봄이 남은 버리었습니다. 불러 이름을 다 가을로 언덕 헤는 까닭입니다. 마디씩 어머니, 아이들의 강아지, 까닭입니다. 소녀들의 묻힌 딴은 말 않은 하나 봅니다. 별을 별에도 못 나는 당신은 봅니다. 하나에 프랑시스 잔디가 있습니다."
+		var str3 = "우는 별이 패, 때 지나가는 거외다. 이 우는 써 다하지 별을 보고, 밤을 것은 버리었습니다. 가을 하나에 남은 흙으로 이름을 밤을 위에 거외다. 별에도 책상을 못 부끄러운 릴케 듯합니다. 없이 다 새워 않은 하나 있습니다. 아직 그리워 소녀들의 쓸쓸함과 내 내린 소학교 봅니다."
+		$("article:first-child p").html(str1);
+		$("article:nth-child(2) p").html(str2);
+		$("article:nth-child(3) p").html(str3);
+
+		$("article:has(h1:contains('궁서체'))").addClass('gungsuhche');
+		$("article:has(h1:contains('나눔손글씨붓'))").addClass('nanumbrush');
+		$("article:has(h1:contains('맑은고딕'))").addClass('puregothic');
+		$("article:has(h1:contains('바탕'))").addClass('batang');
+		$("article:has(h1:contains('썸타임'))").addClass('sometime');
+		$("article:has(h1:contains('포천오성과한음'))").addClass('oseungandhanum');
+		$("article:has(h1:contains('한나는열한살'))").addClass('hanahiseleven');
+		$("article:has(h1:contains('훈화양연화'))").addClass('hoonhwayang');
+	});
+</script>
 {% endblock %} 

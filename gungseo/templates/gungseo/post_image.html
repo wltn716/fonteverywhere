@@ -1,7 +1,7 @@
 {% extends 'gungseo/application.html' %}
 {% load staticfiles %}
 {% block content %}
-<section class="vertical_center">
+<section class="vertical_center content">
   <div class="upload_wrap">
     <form method="post" action="{% url 'result' %}" enctype="multipart/form-data" novalidate>
       {% csrf_token %}
