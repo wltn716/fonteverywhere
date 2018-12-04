@@ -14,6 +14,10 @@ def index(request):
 	return render(request, 'gungseo/index.html', {})
 
 def post_image(request):
+	try:
+		shutil.rmtree('media/')
+	except:
+		pass
 	form = UploadFileForm()
 	return render(request, 'gungseo/post_image.html', {'form': form})
 
