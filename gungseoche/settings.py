@@ -26,7 +26,7 @@ SECRET_KEY = '#uwvrtb-_kzz=$==_yx=c)nucmxt^)u=&&f!fu)got8u=n)b=v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
+ALLOWED_HOSTS = ['ec2-13-209-70-112.ap-northeast-2.compute.amazonaws.com','127.0.0.1', '.pythonanywhere.com']
 
 
 # Application definition

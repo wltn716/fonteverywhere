@@ -41,7 +41,9 @@ class getFontInfo:
     newpath = 'newmedia/new/'
     self.preprocessing(newpath)
 
+    #이미지 데이터 정규화
     test_datagen = ImageDataGenerator(rescale=1./255)
+    #이미지 데이터 제너레이트
     test_generator = test_datagen.flow_from_directory('newmedia',
                                                       target_size=(28,28),
                                                       color_mode='grayscale',
@@ -50,7 +52,7 @@ class getFontInfo:
 
     #모델 로드
     model = load_model('gungseo/fontModel.h5')
-    #테스트 셋 예측
+    #모델 적용하여 테스트 셋 예측
     predictions = model.predict_generator(test_generator, steps=1)
     #클리어
     K.clear_session()
